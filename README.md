@@ -22,14 +22,31 @@ Required:
 
 - Ability to import all episodes of all seasons of Game of Thrones from OMDb API.
 
-> (You will have to get an APIKey from http://www.omdbapi.com/apikey.aspx to use their API) The APIs that should probably be used are in the following format:
-http://www.omdbapi.com/?t=Game of Thrones&Season=1&apikey= http://www.omdbapi.com/?i=&apikey=
-(for an episode)
+> This can be done by executing the management command 'importdata'.
+> 
+> python manage.py importdata
+> 
+> This will import the data from OMDb's API and save it to the Show,Season and Episode models.
 
 - Design the data model to store this data. You need not store all the attributes of an episode. Select the ones you
   think are important.
+  
+> Done, read above.
+
 - Create GET API endpoints that can return episode information in a list format, as well as information for a specific
   episode, when retrieved by id
+  
+> Done, this was done with the tastypie library.
+> The api can be accessed by:
+> 
+> For all the seasons of all episodes
+> http://localhost:8000/api/episode/
+> 
+> For all the episodes of a specific season 
+> http://localhost:8000/api/episode/?season__number=7
+> 
+> For a specific episode of a specific season 
+> http://localhost:8000/api/episode/?season__number=7&id=134
 
 In case you have frontend knowledge:
 
@@ -40,7 +57,13 @@ Nice to have:
 
 - Design a data model to store basic text comments to be associated with a specific episode, along with a GET API to
   retrieve all of the comments for an episode
+  >Done
+   
 - Design and implement a separate CRUD API for these text comments.
+  >Partially implemented
+  > To create send 
+  > {"episode":"/api/episode/74/","comment":"a new comment"}
+  > http://localhost:8000/api/comment/
 - Ability to filter episodes where imdbRating is greater than 8.8 for a season or for all seasons.
 - Write some unit tests
 - Docker implementation with a custom `Dockerfile` and a `docker-compose.yml`
