@@ -67,6 +67,29 @@ TEMPLATES = [
     },
 ]
 
+# README
+# https://memcached.org/
+# used the software above, then, according to the docs:
+# https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-CACHES-BACKEND
+# all we need to add something similar to this depending on our needs
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+# ---------
+# to save something we use it as such:
+# memcached_set("foo:" . foo_id, foo)
+# to retrieve it's as such:
+# foo = memcached_get("foo:".foo_id)
+# since i implemented the api with tastypie the trouble is not worth it to
+# implement it with it but if done in the traditional way (in the views) this would
+# be easy to use and implement since we have more control and flexibility over the api.
+# Since tastypie does a lot of the work "behind the curtains" it's not worth to mess with
+# predefined code and make function overrides.
+
+
 WSGI_APPLICATION = 'bold.wsgi.application'
 
 # Database
