@@ -1,5 +1,6 @@
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+from tastypie.cache import SimpleCache
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.fields import ForeignKey
 from tastypie.resources import ModelResource
@@ -13,8 +14,9 @@ class SeasonResource(ModelResource):
         resource_name = 'episode'
         allowed_methods = ['get']
         filtering = {
-            'number':('exact')
+            'number': ('exact')
         }
+        cache = SimpleCache(cache_name='resources', timeout=10)
 
 
 class EpisodeResource(ModelResource):
@@ -28,6 +30,7 @@ class EpisodeResource(ModelResource):
             'season': ALL_WITH_RELATIONS,
             'id': ALL
         }
+        cache = SimpleCache(cache_name='resources', timeout=10)
 
 
 class CommentResource(ModelResource):
@@ -36,9 +39,10 @@ class CommentResource(ModelResource):
     class Meta:
         queryset = Comment.objects.all()
         resource_name = 'comment'
-        allowed_methods = ['get','post','patch','delete']
+        allowed_methods = ['get', 'post', 'patch', 'delete']
         authentication = Authentication()
         authorization = Authorization()
-        filtering= {
-            'episode':('exact')
+        filtering = {
+            'episode': ('exact')
         }
+        cache = SimpleCache(cache_name='resources', timeout=10)

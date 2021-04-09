@@ -72,12 +72,12 @@ TEMPLATES = [
 # used the software above, then, according to the docs:
 # https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-CACHES-BACKEND
 # all we need to add something similar to this depending on our needs
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
 # ---------
 # to save something we use it as such:
 # memcached_set("foo:" . foo_id, foo)
@@ -89,6 +89,21 @@ CACHES = {
 # Since tastypie does a lot of the work "behind the curtains" it's not worth to mess with
 # predefined code and make function overrides.
 
+
+#Since I've used tastypie I've followed its  documention to implement a cache the way they intended to
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 60
+    },
+    'resources': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 60
+    }
+}
+# Now we just need to add:
+# cache = SimpleCache(cache_name='resources', timeout=10)
+# to our resources in api.py
 
 WSGI_APPLICATION = 'bold.wsgi.application'
 
