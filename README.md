@@ -27,6 +27,12 @@ http://134.209.232.100:8081/
 
 https://documenter.getpostman.com/view/11011869/UUxtEWB6
 
+## Run project (docker)
+
+Assumption: you have docker and docker compose installed
+    
+    docker-compose up -d
+
 ## Preparation steps :warning:
 These steps have already been made. So you should follow them only if you want to reproduce the whole setup process from the ground.
 
@@ -49,13 +55,9 @@ Make sure you updated your digital ocean token key [here](terraform/terraform.tf
 
 #### Start the project
 
-Load the aliases script (convenience tool)
-
-    . aliases.sh
-
 Run docker containers in detached mode
 
-    dcud
+    docker-compose up -d
 
 #### Polulating the database
 
