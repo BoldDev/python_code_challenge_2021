@@ -1,0 +1,6 @@
+mongo_database
+env
+backup
+__pycache__
+*.env
+*.zip
