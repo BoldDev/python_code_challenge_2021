@@ -1,55 +1,70 @@
-# python_code_challenge_2021
+# Project
 
-The goal of this exercise is to test if you know your way around developing REST APIs in Python. You can use any rest
-framework and database of your choice. Approach it the way you would an actual long-term project.
+## Info
 
-Tasks Your task is to build a JSON-based REST API for your frontend developers to consume. You have built a list of user
-stories with your colleagues, but you get to decide how to design the API.
+The live project is on a Linux machine hosted on Digital Ocean.
 
-We do not need you to implement users or authentication, to reduce the amount of time this exercise will take to
-complete. Ideally, you should not spend more than about 4 hours total working time on the exercise, but can be completed
-over as long a period as is required.
+## Stack
 
-**We provide you a `.gitignore` and a `.editorconfig` files to help you out creating your solution (you can discard them 
-if you wish)**
+* Flask
+* MongoDB
 
-> NOTE: You can either clone this repo and use it privately, or you can fork it and
-> once you've finished you can create a Pull Request, so our team can evaluate your
-> code and how well you could know `git` (Not required, but it will be considered
-> as a bonus during our analysis)
+## Production server
+http://134.209.232.100:5000/
 
-Required:
+## Mongo admin control page
 
-- Ability to import all episodes of all seasons of Game of Thrones from OMDb API.
+http://134.209.232.100:8081/
 
-> (You will have to get an APIKey from http://www.omdbapi.com/apikey.aspx to use their API) The APIs that should probably be used are in the following format:
-http://www.omdbapi.com/?t=Game of Thrones&Season=1&apikey= http://www.omdbapi.com/?i=&apikey=
-(for an episode)
+## For SSH connection to the server
 
-- Design the data model to store this data. You need not store all the attributes of an episode. Select the ones you
-  think are important.
-- Create GET API endpoints that can return episode information in a list format, as well as information for a specific
-  episode, when retrieved by id
+    ssh -i <private_key_file_path> bold@134.209.232.100
 
-In case you have frontend knowledge:
+* Send me your public key (costa86@zoho.com)
+* Server user / password: bold / 123456
 
-- Provide a frontend landing page consuming the endpoints you've created and show it as beautifully as you'd like (you
-  can use Any Frontend library you like, Vanilla JS is also welcomed)
+## API documentation
 
-Nice to have:
+https://documenter.getpostman.com/view/11011869/UUxtEWB6
 
-- Design a data model to store basic text comments to be associated with a specific episode, along with a GET API to
-  retrieve all of the comments for an episode
-- Design and implement a separate CRUD API for these text comments.
-- Ability to filter episodes where imdbRating is greater than 8.8 for a season or for all seasons.
-- Write some unit tests
-- Docker implementation with a custom `Dockerfile` and a `docker-compose.yml`
-  file
+## Preparation steps :warning:
+These steps have already been made. So you should follow them only if you want to reproduce the whole setup process from the ground.
 
-Bonus (Completely optional):
+### On client machine
 
-- Create a cache layer (any engine you like) to store the data and return it from any endpoint.
-- Automated scripts (via Makefile) to make our life easier to test
-- Swagger implementation to expose an documented API
+#### Server creation
 
-![Good Luck](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeme-generator.com%2Fwp-content%2Fuploads%2Fmememe%2F2019%2F11%2Fmememe_cb8e239ef97eb73a7d04ecf46ed4bf5c-1.jpg&f=1&nofb=1)
+Make sure you updated your digital ocean token key [here](terraform/terraform.tfvars)
+
+    cd terraform 
+    terraform plan
+    terraform apply -auto-approve
+
+### On server machine
+
+#### Installation
+
+    apt upgrade
+    apt install docker.io docker-compose unzip apache2 -y
+
+#### Start the project
+
+Load the aliases script (convenience tool)
+
+    . aliases.sh
+
+Run docker containers in detached mode
+
+    dcud
+
+#### Polulating the database
+
+Access mongo container
+
+    docker exec -it mongo_con sh
+
+Export records to database
+
+    mongoimport backup/episodes.json -d gotdb -c episodes --authenticationDatabase admin -u root -p example --drop 
+
+
