@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ website_name }} - Home{% endblock %}
+
+{% block content %}
+<!-- series -->
+{% if titles_exists == True and filtered != True %}
+<div id="series" class="our">
+    <div class="container">
+        {% for title in titles %}
+        <div class="row">
+            <div class="col-md-12 margin_bottom">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <div class="two-box">
+                            <figure><img src="{{ title.poster }}"/></figure>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="Series">
+                            <h3>{{ title.title }}</h3>
+                            <small>
+                                {{ title.imdb_rating }} |
+                                {{ title.genres.0 }} |
+                                {{ title.languages.0 }} |
+                                {{ title.released }}
+                            </small>
+                            <p>{{ title.plot }}</p>
+                            <a href="/{{ title.imdb_id }}">More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- filtered series -->
+{% elif filtered_titles_exists == True %}
+<div id="series" class="our">
+    <div class="container">
+        {% for title in filtered_titles %}
+        <div class="row">
+            <div class="col-md-12 margin_bottom">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <div class="two-box">
+                            <figure><img src="{{ title.poster }}"/></figure>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="Series">
+                            <h3>{{ title.title }}</h3>
+                            <small>
+                                {{ title.imdb_rating }} |
+                                {{ title.genres.0 }} |
+                                {{ title.languages.0 }} |
+                                {{ title.released }}
+                            </small>
+                            <p>{{ title.plot }}</p>
+                            <a href="/{{ title.imdb_id }}">More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% else %}
+<!-- none series -->
+<div id="series" class="our">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 margin_bottom">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="Series">
+                            <h3>Oops!</h3>
+                            <p>It seems your query does not match any series on our website!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

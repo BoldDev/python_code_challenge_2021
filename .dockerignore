@@ -1,0 +1,7 @@
+# This file is used by Docker when building images in order to prevent undesirable files and directories
+# being moved to Docker context. It's useful because Docker needs to move . folders to context in order to
+# build images.
+venv
+database/api_data
+database/main_site_data
+services/services.log

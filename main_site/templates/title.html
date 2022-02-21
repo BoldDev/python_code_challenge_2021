@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ website_name }} - {{ main_title.title }}{% endblock %}
+
+{% block content %}
+
+<!-- serie -->
+{% if main_title_exists == True %}
+<div id="series" class="our">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 margin_bottom">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <div class="two-box">
+                            <figure><img src="{{ main_title.poster }}"/></figure>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="Series">
+                            <h3>{{ main_title.title }}</h3>
+                            <span>
+                                Rating: {{ main_title.imdb_rating }}<br>
+                                Genres:
+                                {% for genre in main_title.genres %}
+                                {% if forloop.last %}
+                                {{ genre }}
+                                {% else %}
+                                {{ genre}} |
+                                {% endif %}
+                                {% endfor %}.<br>
+                                Languages:
+                                {% for language in main_title.languages %}
+                                {% if forloop.last %}
+                                {{ language }}
+                                {% else %}
+                                {{ language }} |
+                                {% endif %}
+                                {% endfor %}.<br>
+                                Released: {{ main_title.released }}<br>
+                                Plot: {{ main_title.plot }}<br>
+                            </span>
+                            {% for season in seasons %}
+                            <p>
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ season.season_owner_title }}{{ season.id }}" aria-expanded="false" aria-controls="{{ season.season_owner_title }}{{ season.id }}">
+                                    Season {{ season.season_number }}
+                                </button>
+                            </p>
+                            <div class="collapse" id="{{ season.season_owner_title }}{{ season.id }}">
+                                <div class="card card-body">
+                                    {% for episode in season.episodes %}
+                                    <div class="row">
+                                        <div class="col-md-12 margin_bottom">
+                                            <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                    <div class="two-box">
+                                                        <figure><img class="episode" src="{{ episode.poster }}"/></figure>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                                                    <div class="Series">
+                                                        <h3>{{ episode.title }}</h3>
+                                                        <small>
+                                                            {{ episode.imdb_rating }} |
+                                                            {{ episode.episode_number }} |
+                                                            {{ episode.runtime }} minutes |
+                                                            {{ episode.released }}
+                                                        </small>
+                                                        <p>{{ episode.plot }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- none serie -->
+<div id="series" class="our">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 margin_bottom">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="Series">
+                            <h3>Oops!</h3>
+                            <p>It seems this series ID does not match any series on our website!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- chat
+<div class="absolute">
+    <div class="box box-warning direct-chat direct-chat-warning">
+        <div class="box-body">
+            <div class="direct-chat-messages">
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+                <div class="direct-chat-msg right">
+                    <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                    </div>
+                    <div class="direct-chat-text">
+                        I would love to.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <form action="#" method="post">
+                <div class="input-group"> <input type="text" name="message" placeholder="Type Message ..." class="form-control"> <span class="input-group-btn"> <button type="button" class="btn btn-warning btn-flat">Send</button> </span> </div>
+            </form>
+        </div>
+    </div>
+</div>
+ -->
+{% endblock %}
