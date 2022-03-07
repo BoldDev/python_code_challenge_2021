@@ -16,7 +16,7 @@ Required:
 	 - `/api/v1.0/season/<int:season_index>/episode/<int:episode_index>/comments/add` adds a comment for an episode
 	 - `/api/v1.0/best-ratings/season/<int:season_index>` gets the best episodes of a season
 	 - `/api/v1.0/best-ratings` gets the best episodes of the show overall
-	 - `/api/v1.0/search` search engine for episode names
+	 - `/api/v1.0/search?q=<search term>&max=<maximum number of results>` search engine for episode names
 
 ~~In case you have frontend knowledge:~~
 
@@ -27,7 +27,7 @@ Nice to have:
 
 - **Design a data model to store basic text comments to be associated with a specific episode, along with a GET API to   retrieve all of the comments for an episode** 	 
 	- `/api/v1.0/season/<int:season_index>/episode/<int:episode_index>/comments` 
-	- `/api/v1.0/season/<int:season_index>/episode/<int:episode_index>/comments/add`
+	- `/api/v1.0/season/<int:season_index>/episode/<int:episode_index>/comments/add?c=<Comment text, URL-encoded>`
 ~~- Design and implement a separate CRUD API for these text comments.~~
 - **Ability to filter episodes where imdbRating is greater than 8.8 for a season or for all seasons.**
 	 - `/api/v1.0/best-ratings/season/<int:season_index>`
