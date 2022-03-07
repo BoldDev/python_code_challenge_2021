@@ -175,20 +175,8 @@ def _sanitize_sql_text(input_text: str):
     return ''.join([dd if dd in ALLOWED_CHARS else '' for dd in input_text])
 
 
-@bp.route('/search', methods=['GET'])
-@cache.cached(timeout=300)
-def search_episode():
-    args = request.args.to_dict()
-
-    max_results = min(args.get('max', 8), 8)
-    query = args.get('q', '')
-
-    search_term = _sanitize_sql_text(query)
-    search_term = f'%{search_term}%'
-
-    if not query:
-        return flask.jsonify({'Response': False})
-
+@cache.memoize(timeout=300)
+def db_search_episode(search_term: str, max_results: int) -> list:
     conn = db_connection()
     cursor = conn.cursor()
     cursor.execute(f'select {",".join(table_eps_cols)} '
@@ -198,6 +186,23 @@ def search_episode():
     data_selected = cursor.fetchall()
     cursor.close()
     conn.close()
+    return data_selected
+
+
+@bp.route('/search', methods=['GET'])
+def search_episode():
+    args = request.args.to_dict()
+
+    max_results = min(int(args.get('max', 8)), 8)
+    query = args.get('q', '')
+
+    search_term = _sanitize_sql_text(query)
+    search_term = f'%{search_term}%'
+
+    if not query:
+        return flask.jsonify({'Response': False})
+
+    data_selected = db_search_episode(search_term, max_results)
 
     result = [
         {

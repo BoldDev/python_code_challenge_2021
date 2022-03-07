@@ -12,7 +12,7 @@ class Config:
     def __init__(self):
         self.DB_SQLITE_DIR = self._get_environ("DB_SQLITE_DIR")
         self.OMDBAPI_KEY = self._get_environ("OMDBAPI_KEY")
-        self.API_PORT = self._get_environ("API_PORT")
+        self.API_PORT = int(self._get_environ("API_PORT"))
 
     @staticmethod
     def _get_environ(keyword: str):
@@ -21,4 +21,3 @@ class Config:
             raise RuntimeError(f'{keyword} environment variable not setup.')
         else:
             return var
-
