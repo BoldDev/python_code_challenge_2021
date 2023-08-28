@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}OMDB - Game of Thrones{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>IMDB Rating greater than 8.8</h2>
+    <form method="get" class="form-inline mb-4">
+        <select id="season_number" name="season_number" class="form-control mr-2">
+            <option value="">All Seasons</option>
+            <option value="1" {% if selected_seasons.1 %}selected{% endif %}>Season 1</option>
+            <option value="2" {% if selected_seasons.2 %}selected{% endif %}>Season 2</option>
+            <option value="3" {% if selected_seasons.3 %}selected{% endif %}>Season 3</option>
+            <option value="4" {% if selected_seasons.4 %}selected{% endif %}>Season 4</option>
+            <option value="5" {% if selected_seasons.5 %}selected{% endif %}>Season 5</option>
+            <option value="6" {% if selected_seasons.6 %}selected{% endif %}>Season 6</option>
+            <option value="7" {% if selected_seasons.7 %}selected{% endif %}>Season 7</option>
+            <option value="8" {% if selected_seasons.8 %}selected{% endif %}>Season 8</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Apply Filter</button>
+    </form>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IMDB Id</th>
+                <th>Title</th>
+                <th>Episode Number</th>
+                <th>Season Number</th>
+                <th>IMDB Rating</th>
+                <th>Released</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for episode in response %}
+            <tr>
+                <td>{{ episode.imdb_id }}</td>
+                <td>{{ episode.title }}</td>
+                <td>{{ episode.episode_number }}</td>
+                <td>{{ episode.episode_season }}</td>
+                <td>{{ episode.imdb_rating }}</td>
+                <td>{{ episode.released }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td>No episodes found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+{% endblock %}

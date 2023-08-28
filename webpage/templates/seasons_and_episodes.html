@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}OMDB - Game of Thrones{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Episodes of Game of Thrones</h2>
+    <form method="GET" class="search-form">
+        <div class="input-group">
+            <input type="text" name="search_episodes" class="form-control" placeholder="Search for IMDB Id">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IMDB Id</th>
+                <th>Title</th>
+                <th>Episode Number</th>
+                <th>Season Number</th>
+                <th>IMDB Rating</th>
+                <th>Released</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for episode in filtered_response_by_id %}
+            <tr>
+                <td>{{ episode.imdb_id }}</td>
+                <td>{{ episode.title }}</td>
+                <td>{{ episode.episode_number }}</td>
+                <td>{{ episode.episode_season }}</td>
+                <td>{{ episode.imdb_rating }}</td>
+                <td>{{ episode.released }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td>No episodes found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+{% endblock %}

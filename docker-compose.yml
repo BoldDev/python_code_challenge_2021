@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  devoteam:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    networks:
+      devoteam:
+
+networks:
+  devoteam:

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}OMDB - Game of Thrones{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Comments of episodes</h2>
+    <form method="GET" class="search-form">
+        <div class="input-group">
+            <input type="text" name="search_episodes_comments" class="form-control"
+                placeholder="Search for Episode Name">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Comment</th>
+                <th>Episode Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comments in filtered_response %}
+            <tr>
+                <td>{{ comments.author }}</td>
+                <td>{{ comments.comment }}</td>
+                <td>{{ comments.comment_episode }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td>No comments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+{% endblock %}
