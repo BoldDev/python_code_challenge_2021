@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}OMDB - Game of Thrones{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for title in response %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ title.poster }}" class="card-img-top" alt="{{ item.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ title.plot }}</h5>
+                    <p class="card-text">{{ title.released }}</p>
+                    <p class="card-text">{{ title.imdb_rating }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
