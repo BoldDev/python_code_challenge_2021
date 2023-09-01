@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  python_challenge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    image: python_challenge
+    volumes:
+      - .:/app
+      - static_volume:/usr/src/app/static
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    # volumes: # to persist data
+    #   - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_DB=challenge_db
+
+volumes:
+  postgres_data:
+  static_volume:

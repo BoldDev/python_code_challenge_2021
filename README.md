@@ -53,3 +53,10 @@ Bonus (Completely optional):
 - Swagger implementation to expose an documented API
 
 ![Good Luck](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeme-generator.com%2Fwp-content%2Fuploads%2Fmememe%2F2019%2F11%2Fmememe_cb8e239ef97eb73a7d04ecf46ed4bf5c-1.jpg&f=1&nofb=1)
+
+
+
+Considerações:
+
+- Decidi fazer a separaçao de episodios por season em vez de os juntar todos e ir buscar o episodio nº94. Isto porque a API da OMDB começa sempre no episódio 1 para cada temporada
+- Error codes mais especificos e criar customizaveis com error codes especificos (por exemplo, quando nao encontra a serie nº999)
