@@ -1,0 +1,27 @@
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 80
+
+[tool.pytest.ini_options]
+# addopts = """
+#     -vv
+#     --exitfirst
+#     --new-first
+#     --durations=10
+#     --asyncio-mode=auto
+#     --cov=app
+#     -m='full'
+# """
+addopts = """
+    -vv
+    --exitfirst
+    --new-first
+    --asyncio-mode=auto
+"""
+
+
+# markers = [
+#     "smoke: smoke tests",
+# ]

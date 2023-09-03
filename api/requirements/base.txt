@@ -1,0 +1,24 @@
+alembic
+asyncpg
+# backoff
+# bcrypt
+fastapi
+# fastapi-utils
+httpx
+# itsdangerous
+# passlib
+psycopg2-binary
+pydantic~=1.10.5
+pytest
+pytest-asyncio
+pytest-cov
+# python-jose
+# python-multipart
+rich
+sqlalchemy
+# sqlalchemy-utils
+tenacity
+typer[all]
+uvicorn
+redis
+aioredis

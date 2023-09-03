@@ -1,0 +1,57 @@
+version: "3.7"
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  api:
+    image: got_local_api
+    build:
+      context: ../
+      dockerfile: ./docker/local/api/Dockerfile
+    container_name: got_local_api
+    env_file:
+      - ../.envs/.local/.api
+    volumes:
+      - ../api:/api:z
+    ports:
+      - 9000:9000
+      - 5678:5678
+    depends_on:
+      - "postgres"
+    tty: true # fixes colored output!
+    command: /start
+
+  web:
+    build:
+      context: ../
+      dockerfile: ./docker/local/web/Dockerfile
+      target: runner
+    volumes:
+      - ../web:/app
+    command: npm run dev
+    ports:
+      - 3000:3000
+    env_file:
+      - ../.envs/.local/.web
+
+  redis:
+    image: redis:latest
+    container_name: got_local_redis
+    ports:
+      - 6379:6379
+
+  postgres:
+    image: postgres:14
+    container_name: got_local_postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 50432:5432
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    command: -p "5432"
