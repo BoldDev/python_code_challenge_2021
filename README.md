@@ -1,55 +1,107 @@
-# python_code_challenge_2021
+# GOT - Game of thrones (challenge)
 
-The goal of this exercise is to test if you know your way around developing REST APIs in Python. You can use any rest
-framework and database of your choice. Approach it the way you would an actual long-term project.
+This is source code is an implementation of a solution to the `python_code_challenge_2021`.
 
-Tasks Your task is to build a JSON-based REST API for your frontend developers to consume. You have built a list of user
-stories with your colleagues, but you get to decide how to design the API.
+# Demo
+https://github.com/fmagno/python_code_challenge_2021/assets/3079603/0b754a4c-16eb-4f0c-9c04-f248ce78384f
 
-We do not need you to implement users or authentication, to reduce the amount of time this exercise will take to
-complete. Ideally, you should not spend more than about 4 hours total working time on the exercise, but can be completed
-over as long a period as is required.
+## Quick start
 
-**We provide you a `.gitignore` and a `.editorconfig` files to help you out creating your solution (you can discard them 
-if you wish)**
+### Dependencies
 
-> NOTE: You can either clone this repo and use it privately, or you can fork it and
-> once you've finished you can create a Pull Request, so our team can evaluate your
-> code and how well you could know `git` (Not required, but it will be considered
-> as a bonus during our analysis)
+- docker
+- [direnv](ttps://direnv.net/docs/installation.html)
+- make
+- python3.9
+- pyenv (or alternative) to be able to install all python dependencies locally. To allow running the Typer CLI on the host
 
-Required:
+### Config
 
-- Ability to import all episodes of all seasons of Game of Thrones from OMDb API.
+Set the `OMDB_API_KEY=''` env variable with your OMDb API key in both config files:
 
-> (You will have to get an APIKey from http://www.omdbapi.com/apikey.aspx to use their API) The APIs that should probably be used are in the following format:
-http://www.omdbapi.com/?t=Game of Thrones&Season=1&apikey= http://www.omdbapi.com/?i=&apikey=
-(for an episode)
+- `.envs/.local/.api`
+- `.envrc`
 
-- Design the data model to store this data. You need not store all the attributes of an episode. Select the ones you
-  think are important.
-- Create GET API endpoints that can return episode information in a list format, as well as information for a specific
-  episode, when retrieved by id
+### direnv
 
-In case you have frontend knowledge:
+Change directory to the main project folder and run direnv allow to set the environment variables on your host to be able to execute the typer CLI commands:
 
-- Provide a frontend landing page consuming the endpoints you've created and show it as beautifully as you'd like (you
-  can use Any Frontend library you like, Vanilla JS is also welcomed)
+```bash
+direnv allow
+```
 
-Nice to have:
+### Build images and run
 
-- Design a data model to store basic text comments to be associated with a specific episode, along with a GET API to
-  retrieve all of the comments for an episode
-- Design and implement a separate CRUD API for these text comments.
-- Ability to filter episodes where imdbRating is greater than 8.8 for a season or for all seasons.
-- Write some unit tests
-- Docker implementation with a custom `Dockerfile` and a `docker-compose.yml`
-  file
+```bash
+make build
+make restart
+```
 
-Bonus (Completely optional):
+### Apply migrations
 
-- Create a cache layer (any engine you like) to store the data and return it from any endpoint.
-- Automated scripts (via Makefile) to make our life easier to test
-- Swagger implementation to expose an documented API
+```bash
+make alembic-upgrade-head
+```
 
-![Good Luck](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeme-generator.com%2Fwp-content%2Fuploads%2Fmememe%2F2019%2F11%2Fmememe_cb8e239ef97eb73a7d04ecf46ed4bf5c-1.jpg&f=1&nofb=1)
+### Fetch episodes from OMDb
+
+```bash
+make fetch
+```
+
+### Clean up the cache/database
+
+```bash
+make prune-cache
+make prune-database
+```
+
+### Frontend
+
+[http://localhost:3000/episodes](http://localhost:3000/episodes)
+
+### Swagger documentation
+
+[http://localhost:9000/api/docs](http://localhost:9000/api/docs)
+
+## Features
+
+- A Makefile serving as the entrypoint for all operations
+- A Typer CLI (accessible through the Makefile) to performed the following operations:
+  - fetch all episodes from OMDb API and store them into a postgres database and store them into a redis cache db.
+  - delete the database containing the stored episodes and comments
+  - delete the redis cache containing the episodes and comments
+- Redis cache
+- Ability to perform the following combination of HTTP methods/resources:
+
+Episodes:
+
+- `GET /episodes`
+- `GET /episodes?season=1&awesome=false **`
+- `GET /episodes/{episode_id}`
+
+\*\* `awesome=true` episodes are those with an imdb rating > 8.8
+
+Comments:
+
+- `POST /comments`:
+
+```bash
+    body: {
+        episode_id: <UUID>
+    }
+```
+
+- `GET /comments?episode_id=<UUID>`
+- `GET /comments/{comment_id}`
+- `PUT /comments/{comment_id}`
+
+```bash
+    body: {
+        episode_id: <UUID>
+    }
+```
+
+- `DELETE /comments/{comment_id}`
+
+

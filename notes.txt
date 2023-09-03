@@ -1,0 +1,23 @@
+
+
+Episodes:
+    -   GET /episodes
+    - * GET /episodes?season=1&awesome=false
+    -   GET /episodes/{episode_id}
+
+Comments:
+    -   POST /comments
+            body: {
+                episode_id: <UUID>
+            }
+    -   GET /comments?episode_id=<UUID>
+    -   GET /comments/{comment_id}
+    -   PUT /comments/{comment_id}
+            body: {
+                episode_id: <UUID>
+            }
+    -   DELETE /comments/{comment_id}
+
+
+
+* `awesome=true` episodes are those with an imdb rating > 8.8

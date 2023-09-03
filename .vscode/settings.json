@@ -1,0 +1,48 @@
+{
+  // "python.formatting.blackArgs": ["--line-length", "80"],
+  // "python.linting.enabled": true,
+  "editor.formatOnSave": true,
+  "python.languageServer": "Pylance",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.formatting.provider": "none",
+  // "python.linting.mypyEnabled": true,
+  // "python.linting.pylintEnabled": false,
+  // "python.linting.flake8Enabled": true,
+  "isort.check": true,
+  "editor.renderLineHighlight": "line",
+  "editor.renderLineHighlightOnlyWhenFocus": false,
+  "editor.scrollBeyondLastLine": true,
+  "editor.guides.bracketPairs": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "block",
+  "editor.cursorBlinking": "blink",
+  "editor.cursorSurroundingLines": 0,
+  "editor.cursorWidth": 0,
+  "editor.find.cursorMoveOnType": true,
+  // "editor.rulers": [
+  //     88
+  // ],
+  "workbench.colorCustomizations": {
+    "editorCursor.foreground": "#ffff00",
+    "terminalCursor.foreground": "#ffff00"
+  },
+  // "editor.defaultFormatter": null,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.inlineSuggest.enabled": true,
+    "editor.quickSuggestions": {
+      "strings": true
+    }
+  }
+}
