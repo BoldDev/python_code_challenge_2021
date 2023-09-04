@@ -1,3 +1,4 @@
+#!/bin/sh
 # Used to check if Postgres is healthy before running migrations
 
 if [ "$DATABASE" = "postgres" ]
