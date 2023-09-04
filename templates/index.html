@@ -24,13 +24,23 @@
 
         // Import all episodes button handler
 		document.getElementById("fetchData").addEventListener("click", function() {
+            var message_field = document.getElementById("responseMessage");
+            var button = document.getElementById("fetchData");
+
+            message_field.textContent = "Importing...hold on a second please...";
+
+            // Disable the button
+            button.disabled = true;
+
 			$.ajax({    
 				type: "GET",
 				url: {% url 'fetch' %}
 			})
 			.done(function(response) {
+                // Enable the button
+                button.disabled = false;
 				// Update an HTML element with the response
-                document.getElementById("responseMessage").textContent = response.message;
+                message_field.textContent = response.message;
 			});
 		});
 

@@ -1,62 +1,47 @@
 # python_code_challenge_2021
 
-The goal of this exercise is to test if you know your way around developing REST APIs in Python. You can use any rest
-framework and database of your choice. Approach it the way you would an actual long-term project.
+## Installation
 
-Tasks Your task is to build a JSON-based REST API for your frontend developers to consume. You have built a list of user
-stories with your colleagues, but you get to decide how to design the API.
+1. Change directory to `python_code_challenge_2021`
+2. Make a copy of `.env.example` with the name `.env.`
+    - Add a random string to `SECRET_KEY`
+    - Add your OMDB key into `OMDB_KEY`. (I though of putting my key, but decided not to because of security reasons)
 
-We do not need you to implement users or authentication, to reduce the amount of time this exercise will take to
-complete. Ideally, you should not spend more than about 4 hours total working time on the exercise, but can be completed
-over as long a period as is required.
+3. Make sure you have docker on your machine
+4. Run
 
-**We provide you a `.gitignore` and a `.editorconfig` files to help you out creating your solution (you can discard them 
-if you wish)**
+```
+docker-compose up --build
+```
 
-> NOTE: You can either clone this repo and use it privately, or you can fork it and
-> once you've finished you can create a Pull Request, so our team can evaluate your
-> code and how well you could know `git` (Not required, but it will be considered
-> as a bonus during our analysis)
+Or '-d' for detachment
 
-Required:
+```
+docker-compose up -d --build
+```
 
-- Ability to import all episodes of all seasons of Game of Thrones from OMDb API.
+5. Go to `localhost:8000/`. There you will have a few instructions.
+6. Check the docs `localhost:8000/docs/` to see all endpoints.
+7. Have fun! :)
 
-> (You will have to get an APIKey from http://www.omdbapi.com/apikey.aspx to use their API) The APIs that should probably be used are in the following format:
-http://www.omdbapi.com/?t=Game of Thrones&Season=1&apikey= http://www.omdbapi.com/?i=&apikey=
-(for an episode)
+## Considerations
 
-- Design the data model to store this data. You need not store all the attributes of an episode. Select the ones you
-  think are important.
-- Create GET API endpoints that can return episode information in a list format, as well as information for a specific
-  episode, when retrieved by id
+- I decided to import all episodes by clicking the button on main page. I though of doing this during docker compose build but if an error occurred, you would never be able to test anything.
 
-In case you have frontend knowledge:
+- When doing `/seasons` GET request, I decided to get all episodes divided into Seasons because I realized that OMDB always started at '1' when counting episodes. So, for instance, if I want the 1st episode I need to specify from which season we're talking about. That's why I created `/seasons/{season_id}{episode_id}`. Also, the naming convention can be a little better
 
-- Provide a frontend landing page consuming the endpoints you've created and show it as beautifully as you'd like (you
-  can use Any Frontend library you like, Vanilla JS is also welcomed)
+- As requested, I added Celery/Redis with 1 worker running. It's only available when fetching all data from OMDB as an example of how it works.
 
-Nice to have:
+- By adding celery, I have to create 2 new containers (Redis and Celery) to make sure everything works smoothly.
 
-- Design a data model to store basic text comments to be associated with a specific episode, along with a GET API to
-  retrieve all of the comments for an episode
-- Design and implement a separate CRUD API for these text comments.
-- Ability to filter episodes where imdbRating is greater than 8.8 for a season or for all seasons.
-- Write some unit tests
-- Docker implementation with a custom `Dockerfile` and a `docker-compose.yml`
-  file
+- Database resets everytime docker shuts down on purpose so you guys can check everything from scratch
 
-Bonus (Completely optional):
+- Error handling need a little work (more detailed and customizable)
 
-- Create a cache layer (any engine you like) to store the data and return it from any endpoint.
-- Automated scripts (via Makefile) to make our life easier to test
-- Swagger implementation to expose an documented API
+- Django code also needs a bit work, by adding more Django Rest Framework stuff
 
-![Good Luck](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmeme-generator.com%2Fwp-content%2Fuploads%2Fmememe%2F2019%2F11%2Fmememe_cb8e239ef97eb73a7d04ecf46ed4bf5c-1.jpg&f=1&nofb=1)
+- Created some tests but a lot more can be done. Sadly, I didn't have the time to run them automatically. So if you want to test, you can go inside docker `python_challenge` container and run:
 
-
-
-Considerações:
-
-- Decidi fazer a separaçao de episodios por season em vez de os juntar todos e ir buscar o episodio nº94. Isto porque a API da OMDB começa sempre no episódio 1 para cada temporada
-- Error codes mais especificos e criar customizaveis com error codes especificos (por exemplo, quando nao encontra a serie nº999)
+```
+python manage.py test
+```

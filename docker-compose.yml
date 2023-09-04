@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     image: python_challenge
+    container_name: python_challenge
     volumes:
       - .:/app
       - static_volume:/usr/src/app/static
@@ -18,12 +19,28 @@ services:
       - db
   db:
     image: postgres:13.0-alpine
+    container_name: database
     # volumes: # to persist data
     #   - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456789
       - POSTGRES_DB=challenge_db
+  celery:
+    build: .
+    container_name: celery-worker
+    command: sh -c "cd /usr/src/app && celery -A python_challenge worker --pool=prefork --concurrency=1 --loglevel=debug -n worker1@%h"
+    depends_on:
+      - python_challenge
+      - db
+      - redis
+    volumes:
+      - .:/app
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres_data:

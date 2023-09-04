@@ -1,8 +1,11 @@
+from __future__ import absolute_import, unicode_literals
+from celery import shared_task
+from .models import Show, Season, Episode
+
 import requests
 import os
-from .models import Show, Season, Episode
-from django.conf import settings
 
+@shared_task
 def import_show(show_name):
     '''
     Function that makes an API request to retrieves show information. 
@@ -10,16 +13,19 @@ def import_show(show_name):
     is being fetched and saved on database
     '''
 
-    # If we imported data, no need to do it again
-    if settings.OMDB_IMPORTED:
-        return "Data is already imported. No need to do it again"
-
-    api_url = f'http://www.omdbapi.com/?t={show_name}&apikey={os.environ.get("OMDB_KEY")}'
-
-    # Send a GET request to the API
-    message = "Show imported with success!"
-
     try:
+        result = {
+            "message": "Show imported with success!",
+            "code": 200
+        }
+
+        # Make sure we have a key
+        if os.environ.get("OMDB_KEY") is None:
+            raise requests.exceptions.RequestException("Make sure you have a valid OMDB_KEY on your .env file")
+
+        # Create url to access OMDB API
+        api_url = f'http://www.omdbapi.com/?t={show_name}&apikey={os.environ.get("OMDB_KEY")}'
+
         # Send a GET request to the API
         response = requests.get(api_url)
 
@@ -42,13 +48,13 @@ def import_show(show_name):
             # Fetch and save all seasons for this show
             import_seasons(api_url, show, int(data['totalSeasons']))
         else:
-            message = f"API request to import show failed with status code {response.status_code}"
+            result['message'] = f"API request to import show failed with status code {response.status_code}"
+            result['code'] = response.status_code
     except requests.exceptions.RequestException as e:
-        message = f"API request to import show failed: {e}"
-        return message
-    
-    settings.OMDB_IMPORTED = True
-    return message
+        result['message'] = f"API request to import show failed: {e}"
+        result['code'] = 400
+        return result
+    return result
 
 def import_seasons(api_url, show, number_seasons):
     '''
@@ -88,6 +94,4 @@ def import_seasons(api_url, show, number_seasons):
 
                 episode.save()
         else:
-            message = f"API request to import show seasons failed with status code {response.status_code}"
-
-    return True
+            raise requests.exceptions.RequestException(f"could not import seasons. Error code: {response.status_code}")

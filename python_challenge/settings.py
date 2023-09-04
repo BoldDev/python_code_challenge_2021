@@ -31,7 +31,14 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")  # ROOT dir for templates
 
 # Assets Management
-ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
+ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_PAGINATION_CLASS':
+    # 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 100,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
 
 # Application definition
 INSTALLED_APPS = [
@@ -141,6 +148,22 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# To make sure our cookies are being served in HTTPS
+SESSION_COOKIE_SECURE = bool(int(os.environ.get("SESSION_COOKIE_SECURE", 0)))
+
+# To make sure our CSRF cookies are being served in HTTPS
+CSRF_COOKIE_SECURE = bool(int(os.environ.get("CSRF_COOKIE_SECURE", 0)))
+
+# To make sure traffic is being redirect from HTTP to HTTPS
+SECURE_SSL_REDIRECT = bool(int(os.environ.get("SECURE_SSL_REDIRECT", 0)))
+
+# Tell that our browser connections should not connect to insecure connections
+SECURE_HSTS_SECONDS = os.environ.get("SECURE_HSTS_SECONDS")
+SECURE_HSTS_PRELOAD = bool(int(os.environ.get("SECURE_HSTS_PRELOAD", 0)))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = bool(
+    int(os.environ.get("SECURE_HSTS_INCLUDE_SUBDOMAINS", 0))
+)
 
 # Flag to make sure we only import from omdb 1 time
 OMDB_IMPORTED = False

@@ -10,27 +10,6 @@ class DateTimeWithoutTZField(DateTimeField):
     def db_type(self, connection):
         return 'timestamp'
 
-class EventManager(models.Manager):
-    def get_show(self):
-
-        data = Show.objects.get(title='Game of Thrones')
-
-        return {
-            "id": data.id,
-            "title": data.title,
-            "genre": data.genre,
-            "year": data.year
-        }
-    
-    def get_episodes_by_season(self, season_num):
-        
-        season = Season.objects.filter(season_number=season_num)
-        data = Episode.objects.filter(season=season)
-
-        print(data)
-
-        return data
-
 class Show(models.Model):
     '''
     Shows model that saves general information about the serie
@@ -43,7 +22,6 @@ class Show(models.Model):
     imdb_id = models.CharField(max_length=15)
     created_at = DateTimeWithoutTZField(auto_now_add=True)
     updated_at = DateTimeWithoutTZField(auto_now=True)
-    objects = EventManager()
 
     class Meta:
         db_table = 'show'
@@ -61,7 +39,6 @@ class Season(models.Model):
     total_episodes = models.CharField(max_length=10)
     created_at = DateTimeWithoutTZField(auto_now_add=True)
     updated_at = DateTimeWithoutTZField(auto_now=True)
-    objects = EventManager()
 
     class Meta:
         db_table = 'season'
@@ -80,7 +57,6 @@ class Episode(models.Model):
     imdb_rating = models.CharField(max_length=5)
     created_at = DateTimeWithoutTZField(auto_now_add=True)
     updated_at = DateTimeWithoutTZField(auto_now=True)
-    objects = EventManager()
 
     class Meta:
         db_table = 'episode'
