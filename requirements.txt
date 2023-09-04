@@ -1,0 +1,7 @@
+Django==4.1.1
+python-dotenv==0.21.0
+psycopg2-binary==2.9.6
+celery==5.0.5
+redis==3.5.2
+requests==2.31.0
+drf-yasg

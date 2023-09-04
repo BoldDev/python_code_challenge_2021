@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page</title>
+</head>
+<body>
+    {% load static %}
+    <h1>Welcome to my super awesome page!</h1>
+    <p>Here's how it works:</p>
+    <p>1. Click on that shiny button to import all Game of Thrones data from OMDB </p>
+    <p>2. Profit! </p>
+    <p>3. Check the documentation (/docs/) for all available endpoints 
+        <a href="/docs/" target="_blank">here</a> 
+    </p>
+
+    <h2>Import all Game of thrones by clicking this button:</h2>
+    <button id="fetchData">Click Me!</button>
+    <p id="responseMessage"></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // Import all episodes button handler
+		document.getElementById("fetchData").addEventListener("click", function() {
+            var message_field = document.getElementById("responseMessage");
+            var button = document.getElementById("fetchData");
+
+            message_field.textContent = "Importing...hold on a second please...";
+
+            // Disable the button
+            button.disabled = true;
+
+			$.ajax({    
+				type: "GET",
+				url: {% url 'fetch' %}
+			})
+			.done(function(response) {
+                // Enable the button
+                button.disabled = false;
+				// Update an HTML element with the response
+                message_field.textContent = response.message;
+			});
+		});
+
+    </script>
+</body>
+</html>
