@@ -12,7 +12,7 @@ then
     echo "PostgreSQL started with $SQL_HOST"
 fi
 
-# Comment this if we dont want to always migrate
+# Comment this in case we dont want to always migrate
 python manage.py flush --no-input
 python manage.py migrate
 
